@@ -13,17 +13,11 @@ public class Employee : IdentityUser
 {
     [Key]
     public int Id { get; set; }
-    [Required]
-    [Column(TypeName="nvarchar(20)")]
     public string FirstName { get; set; }
-    [Required]
-    [Column(TypeName = "nvarchar(20)")]
     public string LastName { get; set; }
-    [Column(TypeName = "nvarchar(20)")]
     public string Login { get; set; }
     public DateTime LastUpdate { get; set; }
     public int Hours { get; set; }
-    [Column(TypeName = "nvarchar(15)")]
     public string Status { get; set; }
 }
 
