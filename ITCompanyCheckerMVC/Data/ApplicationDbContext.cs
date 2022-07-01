@@ -1,4 +1,4 @@
-﻿using ITCompanyCheckerMVC.Areas.Identity.Data;
+﻿using ITCompanyCheckerMVC.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
