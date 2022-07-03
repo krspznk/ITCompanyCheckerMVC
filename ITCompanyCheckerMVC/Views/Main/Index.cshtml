@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if(User.Identity.IsAuthenticated)
+{
 <table class="table">
     <thead>
         <tr>
@@ -25,6 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Hours)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -39,25 +39,23 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Login)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.LastUpdate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Hours)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @Html.DisplayFor(modelItem => item.Salary)
                 </td>
                 <td>
-                    @if (item.Status == "FirstAdmin" || item.Status == "Admin")
+@*                    @if (item.Status == "FirstAdmin" || item.Status == "Admin")
                     {
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    }
+                    }*@
                 </td>
             </tr>
         }
     </tbody>
 </table>
+}
