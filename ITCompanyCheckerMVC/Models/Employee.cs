@@ -18,5 +18,6 @@ public class Employee : IdentityUser
     public DateTime LastUpdate { get; set; }
     public int Hours { get; set; }
     public string Status { get; set; }
+    public float Salary { get; set; }
 }
 
