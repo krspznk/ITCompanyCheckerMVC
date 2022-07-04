@@ -34,5 +34,6 @@ public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Emplo
         builder.Property(x => x.LastUpdate);
         builder.Property(x => x.Hours);
         builder.Property(x => x.Salary);
+        builder.Property(x => x.CardId);
     }
 }

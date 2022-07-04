@@ -1,19 +1,36 @@
 ﻿@using ITCompanyCheckerMVC.Support
 @using Microsoft.AspNetCore.Identity
 @using ITCompanyCheckerMVC.Areas.Identity.Data
+@using Microsoft.EntityFrameworkCore
 
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
+@inject ApplicationDbContext Context
+
+@*[ChildActionOnly]*@
+@*@{
+    public string GetCurrentUser()
+    {
+        ApplicationUser currentUser = Session["CurrentUser"] as ApplicationUser;
+        if (currentUser == null)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            currentUser = db.Users.Find(User.Identity.GetUserId());
+            Session["CurrentUser"] = currentUser;
+        }
+        return "First Name:" + currentUser.FirstName + "<br/>" + "Last Name:" + currentUser.LastName;
+    }
+}*@
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         var applicationUser = await UserManager.GetUserAsync(User);
         var firstName = applicationUser.FirstName;
-        var UserId = applicationUser.Id;
+        var CardId = applicationUser.CardId;
 
         <li class="nav-item">
-            <a id="manage" class="nav-link btn btn-link text-dark" asp-controller="Main" asp-action="Edit" asp-route-id="@UserId" title="Manage">@firstName</a>
+            <a id="manage" class="nav-link btn btn-link text-dark" asp-controller="Main" asp-action="Edit" asp-route-id="@CardId" title="Manage">@firstName</a>
         </li>
         <li class="nav-item">
             <a id="manage" class="nav-link btn btn-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Options</a>
