@@ -30,19 +30,19 @@ namespace ITCompanyCheckerMVC.Controllers
         // GET: Main/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.EmployeeCRUD == null)
+            if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var employeeCRUD = await _context.EmployeeCRUD
+            var users = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employeeCRUD == null)
+            if (users == null)
             {
                 return NotFound();
             }
 
-            return View(employeeCRUD);
+            return View(users);
         }
 
         // GET: Main/Create
@@ -86,7 +86,7 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] EmployeeCRUD users)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee users)
         {
             if (id != users.Id)
             {
