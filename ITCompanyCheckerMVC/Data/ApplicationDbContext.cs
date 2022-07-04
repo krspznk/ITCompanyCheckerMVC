@@ -20,7 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<Employee>
         builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
     }
 
-    public DbSet<ITCompanyCheckerMVC.Models.EmployeeCRUD>? EmployeeCRUD { get; set; }
+    //public DbSet<ITCompanyCheckerMVC.Models.Employee>? Employee { get; set; }
 }
 
 public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Employee>

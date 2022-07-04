@@ -28,6 +28,7 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Details/5
+        [HttpPost]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Users == null)
@@ -56,7 +57,7 @@ namespace ITCompanyCheckerMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] EmployeeCRUD employeeCRUD)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee employeeCRUD)
         {
             if (ModelState.IsValid)
             {
@@ -68,14 +69,24 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? Id)
         {
-            if (id == null || _context.Users == null)
+            if (Id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var users = await _context.Users.FindAsync(id);
+            Employee users = null;
+
+            foreach (var item in _context.Users)
+            {
+                if (Id == item.CardId)
+                {
+                    users = item;
+                    break;
+                }
+            }
+
             if (users == null)
             {
                 return NotFound();
@@ -86,9 +97,9 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee users)
+        public async Task<IActionResult> Edit(int Id, [Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee users)
         {
-            if (id != users.Id)
+            if (Id != users.CardId)
             {
                 return NotFound();
             }
@@ -102,7 +113,7 @@ namespace ITCompanyCheckerMVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(users.Id))
+                    if (!UserExists(users.CardId))
                     {
                         return NotFound();
                     }
@@ -119,12 +130,12 @@ namespace ITCompanyCheckerMVC.Controllers
         // GET: Main/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.EmployeeCRUD == null)
+            if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var employeeCRUD = await _context.EmployeeCRUD
+            var employeeCRUD = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employeeCRUD == null)
             {
@@ -139,14 +150,14 @@ namespace ITCompanyCheckerMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.EmployeeCRUD == null)
+            if (_context.Users == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.EmployeeCRUD'  is null.");
             }
-            var employeeCRUD = await _context.EmployeeCRUD.FindAsync(id);
+            var employeeCRUD = await _context.Users.FindAsync(id);
             if (employeeCRUD != null)
             {
-                _context.EmployeeCRUD.Remove(employeeCRUD);
+                _context.Users.Remove(employeeCRUD);
             }
 
             await _context.SaveChangesAsync();
