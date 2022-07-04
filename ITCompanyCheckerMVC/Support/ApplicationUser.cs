@@ -9,5 +9,8 @@ namespace ITCompanyCheckerMVC.Support
 
         [PersonalData]
         public string LastName { get; set; }
+
+        [PersonalData]
+        public int Id { get; set; }
     }
 }
