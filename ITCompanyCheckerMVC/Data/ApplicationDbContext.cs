@@ -20,7 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<Employee>
         builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
     }
 
-    public DbSet<ITCompanyCheckerMVC.Models.EmployeeCRUD>? EmployeeCRUD { get; set; }
+    //public DbSet<ITCompanyCheckerMVC.Models.Employee>? Employee { get; set; }
 }
 
 public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Employee>
@@ -34,5 +34,6 @@ public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Emplo
         builder.Property(x => x.LastUpdate);
         builder.Property(x => x.Hours);
         builder.Property(x => x.Salary);
+        builder.Property(x => x.CardId);
     }
 }

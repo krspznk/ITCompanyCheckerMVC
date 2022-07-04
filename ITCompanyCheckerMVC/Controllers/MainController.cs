@@ -28,21 +28,22 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Details/5
+        [HttpPost]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.EmployeeCRUD == null)
+            if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var employeeCRUD = await _context.EmployeeCRUD
+            var users = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employeeCRUD == null)
+            if (users == null)
             {
                 return NotFound();
             }
 
-            return View(employeeCRUD);
+            return View(users);
         }
 
         // GET: Main/Create
@@ -56,7 +57,7 @@ namespace ITCompanyCheckerMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] EmployeeCRUD employeeCRUD)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee employeeCRUD)
         {
             if (ModelState.IsValid)
             {
@@ -68,29 +69,37 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? Id)
         {
-            if (id == null || _context.EmployeeCRUD == null)
+            if (Id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var employeeCRUD = await _context.EmployeeCRUD.FindAsync(id);
-            if (employeeCRUD == null)
+            Employee users = null;
+
+            foreach (var item in _context.Users)
+            {
+                if (Id == item.CardId)
+                {
+                    users = item;
+                    break;
+                }
+            }
+
+            if (users == null)
             {
                 return NotFound();
             }
-            return View(employeeCRUD);
+            return View(users);
         }
 
         // POST: Main/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] EmployeeCRUD employeeCRUD)
+        public async Task<IActionResult> Edit(int Id, [Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee users)
         {
-            if (id != employeeCRUD.Id)
+            if (Id != users.CardId)
             {
                 return NotFound();
             }
@@ -99,12 +108,12 @@ namespace ITCompanyCheckerMVC.Controllers
             {
                 try
                 {
-                    _context.Update(employeeCRUD);
+                    _context.Update(users);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeCRUDExists(employeeCRUD.Id))
+                    if (!UserExists(users.CardId))
                     {
                         return NotFound();
                     }
@@ -115,18 +124,18 @@ namespace ITCompanyCheckerMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(employeeCRUD);
+            return View(users);
         }
 
         // GET: Main/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.EmployeeCRUD == null)
+            if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var employeeCRUD = await _context.EmployeeCRUD
+            var employeeCRUD = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employeeCRUD == null)
             {
@@ -141,23 +150,23 @@ namespace ITCompanyCheckerMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.EmployeeCRUD == null)
+            if (_context.Users == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.EmployeeCRUD'  is null.");
             }
-            var employeeCRUD = await _context.EmployeeCRUD.FindAsync(id);
+            var employeeCRUD = await _context.Users.FindAsync(id);
             if (employeeCRUD != null)
             {
-                _context.EmployeeCRUD.Remove(employeeCRUD);
+                _context.Users.Remove(employeeCRUD);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeCRUDExists(int id)
+        private bool UserExists(int id)
         {
-            return (_context.EmployeeCRUD?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
