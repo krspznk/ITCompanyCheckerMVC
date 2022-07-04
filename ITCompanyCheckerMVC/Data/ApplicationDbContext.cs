@@ -33,5 +33,6 @@ public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Emplo
         builder.Property(x => x.Status).HasMaxLength(255);
         builder.Property(x => x.LastUpdate);
         builder.Property(x => x.Hours);
+        builder.Property(x => x.Salary);
     }
 }
