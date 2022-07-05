@@ -98,6 +98,7 @@ namespace ITCompanyCheckerMVC.Controllers
             if (users == null) return NotFound("Entity 'Employee' is null.");
             
             Employee temp = default(Employee);
+            
             foreach (var item in _context.Users)
             {
                 if (item.CardId == Id)
@@ -106,6 +107,8 @@ namespace ITCompanyCheckerMVC.Controllers
                     break;
                 }
             }
+
+            if (temp.LastUpdate.AddHours(20) > DateTime.Now) return NotFound("20 hours...");
 
             if (temp.Login != users.Login) return NotFound();
             temp.Login = users.Login;
