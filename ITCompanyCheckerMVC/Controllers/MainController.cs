@@ -37,7 +37,7 @@ namespace ITCompanyCheckerMVC.Controllers
             }
 
             var users = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CardId == id);
             if (users == null)
             {
                 return NotFound();
@@ -46,15 +46,11 @@ namespace ITCompanyCheckerMVC.Controllers
             return View(users);
         }
 
-        // GET: Main/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Main/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee employeeCRUD)
@@ -97,35 +93,30 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Id,CardId,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee users)
+        public async Task<IActionResult> Edit(int Id, [Bind("Login,Hours,Status")] Employee users)
         {
-            if (Id != users.CardId)
+            if (users == null) return NotFound("Entity 'Employee' is null.");
+            
+            Employee temp = default(Employee);
+            foreach (var item in _context.Users)
             {
-                return NotFound();
+                if (item.CardId == Id)
+                {
+                    temp = item;
+                    break;
+                }
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(users);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(users.CardId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            users.LastUpdate = DateTime.Now;
-            return View(users);
+            if (temp.Login != users.Login) return NotFound();
+            temp.Login = users.Login;
+            temp.Hours = users.Hours;
+            temp.Status = users.Status;
+            temp.LastUpdate = DateTime.Now;
+
+            _context.Users.Update(temp);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Main/Delete/5
@@ -137,7 +128,7 @@ namespace ITCompanyCheckerMVC.Controllers
             }
 
             var employeeCRUD = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CardId == id);
             if (employeeCRUD == null)
             {
                 return NotFound();
@@ -167,7 +158,7 @@ namespace ITCompanyCheckerMVC.Controllers
 
         private bool UserExists(int id)
         {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Users?.Any(e => e.CardId == id)).GetValueOrDefault();
         }
     }
 }

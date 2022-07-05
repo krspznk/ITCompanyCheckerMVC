@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ITCompanyCheckerMVC.Areas.Identity.Data;
@@ -34,6 +35,8 @@ public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Emplo
         builder.Property(x => x.LastUpdate);
         builder.Property(x => x.Hours);
         builder.Property(x => x.Salary);
-        builder.Property(x => x.CardId);
+        builder.Property(x => x.CardId)
+            .ValueGeneratedOnAdd()
+            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
     }
 }
