@@ -46,24 +46,6 @@ namespace ITCompanyCheckerMVC.Controllers
             return View(users);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee employeeCRUD)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(employeeCRUD);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(employeeCRUD);
-        }
-
         // GET: Main/Edit/5
         public async Task<IActionResult> Edit(int? Id)
         {
