@@ -18,6 +18,7 @@ public class Employee : IdentityUser
     public string LastName { get; set; }
     public string Login { get; set; }
     public DateTime LastUpdate { get; set; }
+    [Range(2,12)]
     public int Hours { get; set; }
     public string Status { get; set; }
     public float Salary { get; set; }

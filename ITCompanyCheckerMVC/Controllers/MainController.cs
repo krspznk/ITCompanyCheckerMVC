@@ -58,6 +58,7 @@ namespace ITCompanyCheckerMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int Id, [Bind("Login,Hours,Status")] Employee users)
         {
+
             if (users == null) return NotFound("Entity 'Employee' is null.");
             
             Employee temp = default(Employee);
@@ -75,8 +76,9 @@ namespace ITCompanyCheckerMVC.Controllers
 
             if (temp.Login != users.Login) return NotFound();
             temp.Login = users.Login;
-            temp.Hours = users.Hours;
+            temp.Hours += users.Hours;
             temp.Status = users.Status;
+            temp.Salary += temp.Hours * 50;
             temp.LastUpdate = DateTime.Now;
 
             _context.Users.Update(temp);
