@@ -27,43 +27,6 @@ namespace ITCompanyCheckerMVC.Controllers
                         Problem("Entity set 'ApplicationDbContext.EmployeeCRUD'  is null.");
         }
 
-        // GET: Main/Details/5
-        [HttpPost]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Users == null)
-            {
-                return NotFound();
-            }
-
-            var users = await _context.Users
-                .FirstOrDefaultAsync(m => m.CardId == id);
-            if (users == null)
-            {
-                return NotFound();
-            }
-
-            return View(users);
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee employeeCRUD)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(employeeCRUD);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(employeeCRUD);
-        }
-
         // GET: Main/Edit/5
         public async Task<IActionResult> Edit(int? Id)
         {
@@ -98,6 +61,7 @@ namespace ITCompanyCheckerMVC.Controllers
             if (users == null) return NotFound("Entity 'Employee' is null.");
             
             Employee temp = default(Employee);
+            
             foreach (var item in _context.Users)
             {
                 if (item.CardId == Id)
@@ -106,6 +70,8 @@ namespace ITCompanyCheckerMVC.Controllers
                     break;
                 }
             }
+
+            if (temp.LastUpdate.AddHours(20) > DateTime.Now) return NotFound("20 hours...");
 
             if (temp.Login != users.Login) return NotFound();
             temp.Login = users.Login;
