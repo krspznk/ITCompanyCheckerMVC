@@ -97,7 +97,7 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Id,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee users)
+        public async Task<IActionResult> Edit(int Id, [Bind("Id,CardId,FirstName,LastName,Login,LastUpdate,Hours,Status")] Employee users)
         {
             if (Id != users.CardId)
             {
@@ -124,6 +124,7 @@ namespace ITCompanyCheckerMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            users.LastUpdate = DateTime.Now;
             return View(users);
         }
 
