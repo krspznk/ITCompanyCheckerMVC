@@ -27,25 +27,6 @@ namespace ITCompanyCheckerMVC.Controllers
                         Problem("Entity set 'ApplicationDbContext.EmployeeCRUD'  is null.");
         }
 
-        // GET: Main/Details/5
-        [HttpPost]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Users == null)
-            {
-                return NotFound();
-            }
-
-            var users = await _context.Users
-                .FirstOrDefaultAsync(m => m.CardId == id);
-            if (users == null)
-            {
-                return NotFound();
-            }
-
-            return View(users);
-        }
-
         // GET: Main/Edit/5
         public async Task<IActionResult> Edit(int? Id)
         {
