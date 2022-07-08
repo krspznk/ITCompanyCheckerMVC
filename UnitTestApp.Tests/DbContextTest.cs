@@ -11,6 +11,7 @@ namespace UnitTestApp.Tests
         [Fact]
         public async Task DatabasesAreAvailableAndCanBeConnectedTo()
         {
+            Assert.True(await ApplicationContext.Database.CanConnectAsync());
         }
     }
 }
