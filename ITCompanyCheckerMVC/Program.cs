@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ITCompanyCheckerMVC.Areas.Identity.Data;
 using ITCompanyCheckerMVC.Models;
@@ -37,6 +36,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Main}/{action=Index}/{Id?}");
+    pattern: "{controller=Main}/{action=Index}/{id?}");
+
 
 app.Run();

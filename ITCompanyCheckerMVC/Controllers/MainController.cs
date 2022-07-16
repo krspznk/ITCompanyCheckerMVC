@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ITCompanyCheckerMVC.Areas.Identity.Data;
 using ITCompanyCheckerMVC.Models;
@@ -28,15 +23,19 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Edit/5
-        public async Task<IActionResult> Edit(int? Id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (Id.HasValue == false || Id.Value == default(int))
+            if (id.HasValue == false || id.Value == default(int))
+            {
                 return NotFound();
+            }
 
-            var user = _context.Users.SingleOrDefault(x => x.CardId == Id);
+            var user = _context.Users.SingleOrDefault(x => x.CardId == id);
 
             if (user == null)
+            {
                 return NotFound();
+            }
 
             return View(user);
         }
@@ -44,12 +43,12 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Login,Hours,Status")] Employee user)
+        public async Task<IActionResult> Edit(int id, [Bind("Login,Hours,Status")] Employee user)
         {
 
             if (user == null) return NotFound("Entity 'Employee' is null.");
 
-            var temp = _context.Users.SingleOrDefault(x => x.CardId == Id);
+            var temp = _context.Users.SingleOrDefault(x => x.CardId == id);
 
             if (temp.LastUpdate.AddHours(20) > DateTime.Now) return NotFound("20 hours...");
 
@@ -69,13 +68,12 @@ namespace ITCompanyCheckerMVC.Controllers
         // GET: Main/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Users == null)
-            {
+            if (id.HasValue == false || id.Value == default(int))
                 return NotFound();
-            }
 
             var employeeCRUD = await _context.Users
                 .FirstOrDefaultAsync(m => m.CardId == id);
+
             if (employeeCRUD == null)
             {
                 return NotFound();
