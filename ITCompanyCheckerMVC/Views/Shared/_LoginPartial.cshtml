@@ -10,10 +10,10 @@
     {
         var applicationUser = await UserManager.GetUserAsync(User);
         var firstName = applicationUser.FirstName;
-        var Id = applicationUser.CardId;
+        var cardId = applicationUser.CardId;
 
         <li class="nav-item">
-            <a class="nav-link btn btn-link text-dark" asp-action="Edit" asp-route-id="@Id">@firstName</a>
+            <a class="nav-link btn btn-link text-dark" asp-action="Edit" asp-route-cardId="@cardId">@firstName</a>
         </li>
         <li class="nav-item">
             <a id="manage" class="nav-link btn btn-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Options</a>
