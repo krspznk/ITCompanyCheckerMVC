@@ -28,28 +28,18 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Edit/5
-        public async Task<IActionResult> Edit(int? Id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (Id == null || _context.Users == null)
-            {
+            if (id.HasValue == false || id.Value == default(int))
                 return NotFound();
-            }
 
             Employee user = null;
 
-            foreach (var item in _context.Users)
-            {
-                if (Id == item.CardId)
-                {
-                    user = item;
-                    break;
-                }
-            }
+            _context.Users.SingleOrDefault(x => x.CardId == id);
 
             if (user == null)
-            {
                 return NotFound();
-            }
+
             return View(user);
         }
 
@@ -122,11 +112,6 @@ namespace ITCompanyCheckerMVC.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool UserExists(int id)
-        {
-            return (_context.Users?.Any(e => e.CardId == id)).GetValueOrDefault();
         }
     }
 }
