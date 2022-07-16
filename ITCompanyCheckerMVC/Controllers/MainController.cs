@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ITCompanyCheckerMVC.Areas.Identity.Data;
 using ITCompanyCheckerMVC.Models;
@@ -28,56 +23,39 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Edit/5
-        public async Task<IActionResult> Edit(int? Id)
+        public async Task<IActionResult> Edit(int? cardId)
         {
-            if (Id == null || _context.Users == null)
+            if (cardId.HasValue == false || cardId.Value == default(int))
             {
                 return NotFound();
             }
 
-            Employee users = null;
+            var user = _context.Users.SingleOrDefault(x => x.CardId == cardId);
 
-            foreach (var item in _context.Users)
-            {
-                if (Id == item.CardId)
-                {
-                    users = item;
-                    break;
-                }
-            }
-
-            if (users == null)
+            if (user == null)
             {
                 return NotFound();
             }
-            return View(users);
+
+            return View(user);
         }
 
         // POST: Main/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Login,Hours,Status")] Employee users)
+        public async Task<IActionResult> Edit(int cardId, [Bind("Login,Hours,Status")] Employee user)
         {
 
-            if (users == null) return NotFound("Entity 'Employee' is null.");
-            
-            Employee temp = default(Employee);
-            
-            foreach (var item in _context.Users)
-            {
-                if (item.CardId == Id)
-                {
-                    temp = item;
-                    break;
-                }
-            }
+            if (user == null) return NotFound("Entity 'Employee' is null.");
+
+            var temp = _context.Users.SingleOrDefault(x => x.CardId == cardId);
 
             if (temp.LastUpdate.AddHours(20) > DateTime.Now) return NotFound("20 hours...");
 
-            if (temp.Login != users.Login) return NotFound();
-            temp.Login = users.Login;
-            temp.Hours += users.Hours;
-            temp.Status = users.Status;
+            if (temp.Login != user.Login) return NotFound();
+            temp.Login = user.Login;
+            temp.Hours += user.Hours;
+            temp.Status = user.Status;
             temp.Salary += temp.Hours * 50;
             temp.LastUpdate = DateTime.Now;
 
@@ -88,15 +66,14 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? cardId)
         {
-            if (id == null || _context.Users == null)
-            {
+            if (cardId.HasValue == false || cardId.Value == default(int))
                 return NotFound();
-            }
 
             var employeeCRUD = await _context.Users
-                .FirstOrDefaultAsync(m => m.CardId == id);
+                .FirstOrDefaultAsync(m => m.CardId == cardId);
+
             if (employeeCRUD == null)
             {
                 return NotFound();
@@ -108,13 +85,13 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int cardId)
         {
             if (_context.Users == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.EmployeeCRUD'  is null.");
             }
-            var employeeCRUD = await _context.Users.FindAsync(id);
+            var employeeCRUD = await _context.Users.FindAsync(cardId);
             if (employeeCRUD != null)
             {
                 _context.Users.Remove(employeeCRUD);
@@ -122,11 +99,6 @@ namespace ITCompanyCheckerMVC.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool UserExists(int id)
-        {
-            return (_context.Users?.Any(e => e.CardId == id)).GetValueOrDefault();
         }
     }
 }
