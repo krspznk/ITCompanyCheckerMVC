@@ -36,7 +36,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Main}/{action=Index}/{id?}");
+    pattern: "{controller=Main}/{action=Index}/{cardId?}");
 
 
 app.Run();

@@ -23,14 +23,14 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? cardId)
         {
-            if (id.HasValue == false || id.Value == default(int))
+            if (cardId.HasValue == false || cardId.Value == default(int))
             {
                 return NotFound();
             }
 
-            var user = _context.Users.SingleOrDefault(x => x.CardId == id);
+            var user = _context.Users.SingleOrDefault(x => x.CardId == cardId);
 
             if (user == null)
             {
@@ -43,12 +43,12 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Login,Hours,Status")] Employee user)
+        public async Task<IActionResult> Edit(int cardId, [Bind("Login,Hours,Status")] Employee user)
         {
 
             if (user == null) return NotFound("Entity 'Employee' is null.");
 
-            var temp = _context.Users.SingleOrDefault(x => x.CardId == id);
+            var temp = _context.Users.SingleOrDefault(x => x.CardId == cardId);
 
             if (temp.LastUpdate.AddHours(20) > DateTime.Now) return NotFound("20 hours...");
 
@@ -66,13 +66,13 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? cardId)
         {
-            if (id.HasValue == false || id.Value == default(int))
+            if (cardId.HasValue == false || cardId.Value == default(int))
                 return NotFound();
 
             var employeeCRUD = await _context.Users
-                .FirstOrDefaultAsync(m => m.CardId == id);
+                .FirstOrDefaultAsync(m => m.CardId == cardId);
 
             if (employeeCRUD == null)
             {
@@ -85,13 +85,13 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int cardId)
         {
             if (_context.Users == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.EmployeeCRUD'  is null.");
             }
-            var employeeCRUD = await _context.Users.FindAsync(id);
+            var employeeCRUD = await _context.Users.FindAsync(cardId);
             if (employeeCRUD != null)
             {
                 _context.Users.Remove(employeeCRUD);
