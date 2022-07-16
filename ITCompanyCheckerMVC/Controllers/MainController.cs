@@ -28,14 +28,12 @@ namespace ITCompanyCheckerMVC.Controllers
         }
 
         // GET: Main/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? Id)
         {
-            if (id.HasValue == false || id.Value == default(int))
+            if (Id.HasValue == false || Id.Value == default(int))
                 return NotFound();
 
-            Employee user = null;
-
-            _context.Users.SingleOrDefault(x => x.CardId == id);
+            var user = _context.Users.SingleOrDefault(x => x.CardId == Id);
 
             if (user == null)
                 return NotFound();
@@ -46,10 +44,10 @@ namespace ITCompanyCheckerMVC.Controllers
         // POST: Main/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Login,Hours,Status")] Employee users)
+        public async Task<IActionResult> Edit(int Id, [Bind("Login,Hours,Status")] Employee user)
         {
 
-            if (users == null) return NotFound("Entity 'Employee' is null.");
+            if (user == null) return NotFound("Entity 'Employee' is null.");
             
             Employee temp = default(Employee);
             
@@ -64,10 +62,10 @@ namespace ITCompanyCheckerMVC.Controllers
 
             if (temp.LastUpdate.AddHours(20) > DateTime.Now) return NotFound("20 hours...");
 
-            if (temp.Login != users.Login) return NotFound();
-            temp.Login = users.Login;
-            temp.Hours += users.Hours;
-            temp.Status = users.Status;
+            if (temp.Login != user.Login) return NotFound();
+            temp.Login = user.Login;
+            temp.Hours += user.Hours;
+            temp.Status = user.Status;
             temp.Salary += temp.Hours * 50;
             temp.LastUpdate = DateTime.Now;
 
