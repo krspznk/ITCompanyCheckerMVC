@@ -35,22 +35,22 @@ namespace ITCompanyCheckerMVC.Controllers
                 return NotFound();
             }
 
-            Employee users = null;
+            Employee user = null;
 
             foreach (var item in _context.Users)
             {
                 if (Id == item.CardId)
                 {
-                    users = item;
+                    user = item;
                     break;
                 }
             }
 
-            if (users == null)
+            if (user == null)
             {
                 return NotFound();
             }
-            return View(users);
+            return View(user);
         }
 
         // POST: Main/Edit/5
